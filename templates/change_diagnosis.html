@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Формула изменений — самодиагностика</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+    h1, h2 { color: #2c3e50; }
+    label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; }
+    input[type="range"] { width: 100%; }
+    output { display: inline-block; width: 2.5em; text-align: center; font-weight: bold; }
+    .scale { font-size: 0.85em; color: #7f8c8d; margin: 0.25rem 0; }
+    .result-box { margin-top: 2rem; padding: 1rem; border-radius: 8px; }
+    .ready { background: #d4edda; color: #155724; }
+    .edge { background: #fff3cd; color: #856404; }
+    .not-ready { background: #f8d7da; color: #721c24; }
+    .actions { margin-top: 2rem; }
+    .action-item { margin-bottom: 0.75rem; padding-left: 1.25rem; position: relative; }
+    .action-item:before { content: "•"; position: absolute; left: 0; }
+    pre { background: #f8f9fa; padding: 1rem; overflow-x: auto; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Формула изменений: C = D × V × F > R</h1>
+  <p>Заполните параметры, чтобы получить рекомендации по запуску изменений.</p>
+
+  <form id="diagnosisForm">
+    <label for="goal">🎯 Цель изменения (одно ключевое)</label>
+    <input type="text" id="goal" name="goal" placeholder="Например: запустить онлайн-курс и выйти на 200k/мес" required>
+
+    <label for="D">D — Неудовлетворённость (0–10) <output id="d-val">5</output></label>
+    <input type="range" id="D" name="D" min="0" max="10" value="5" oninput="updateVal('d', this.value)">
+    <div class="scale">0–3: «вроде норм» → 7–10: «больше не могу так жить»</div>
+
+    <label for="V">V — Видение (0–10) <output id="v-val">5</output></label>
+    <input type="range" id="V" name="V" min="0" max="10" value="5" oninput="updateVal('v', this.value)">
+    <div class="scale">0–3: «хочу лучше» → 7–10: вижу конкретный день новой жизни</div>
+
+    <label for="F">F — Первые шаги (0–10) <output id="f-val">5</output></label>
+    <input type="range" id="F" name="F" min="0" max="10" value="5" oninput="updateVal('f', this.value)">
+    <div class="scale">0–3: «не знаю, с чего начать» → 7–10: есть 1–3 микрошага на 24–72 ч</div>
+
+    <label for="R">R — Сопротивление (0–10) <output id="r-val">5</output></label>
+    <input type="range" id="R" name="R" min="0" max="10" value="5" oninput="updateVal('r', this.value)">
+    <div class="scale">0–3: почти нет → 7–10: мощное (страхи, окружение, усталость)</div>
+
+    <button type="button" onclick="calculate()" style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; font-size: 1.1rem;">Рассчитать</button>
+  </form>
+
+  <div id="result" class="result-box" style="display:none;"></div>
+
+  <script>
+    function updateVal(id, val) { document.getElementById(id + '-val').textContent = val; }
+
+    function calculate() {
+      const D = parseFloat(document.getElementById('D').value);
+      const V = parseFloat(document.getElementById('V').value);
+      const F = parseFloat(document.getElementById('F').value);
+      const R = parseFloat(document.getElementById('R').value);
+      const goal = document.getElementById('goal').value.trim() || '— не указана —';
+
+      const product = (D * V * F) / 100;
+      let assessment, colorClass, rec;
+
+      if (product > R) {
+        assessment = "✅ Готов(-а) к старту";
+        colorClass = "ready";
+        rec = "Импульс есть — запускайте первые шаги и переходите в режим видения (V).";
+      } else if (Math.abs(product - R) <= 0.5) {
+        assessment = "⚠️ На грани — требуется поддержка";
+        colorClass = "edge";
+        rec = "Можно стартовать, но добавьте: наставника, микрошаги, чек-лист или союзника.";
+      } else {
+        assessment = "🛑 Пока не готов(-а)";
+        colorClass = "not-ready";
+        rec = "Сначала усильте слабое звено (D, V или F), прежде чем начинать.";
+      }
+
+      const weak = [D, V, F].map((v, i) => ({val: v, name: ['D','V','F'][i]})).reduce((a,b) => a.val < b.val ? a : b);
+      const weakName = ({D:'неудовлетворённость', V:'видение', F:'первые шаги'})[weak.name];
+
+      const resultHTML = `
+        <h2>Результат диагностики</h2>
+        <p><strong>Цель:</strong> ${goal}</p>
+        <p><strong>D × V × F / 100 =</strong> ${(product).toFixed(2)} &nbsp;&nbsp; | &nbsp;&nbsp; <strong>R =</strong> ${R}</p>
+        <p><strong>Статус:</strong> <span style="font-weight:bold">${assessment}</span></p>
+        <p><strong>Рекомендация:</strong> ${rec}</p>
+        <p><strong>Слабое звено:</strong> ${weak.name} — <em>${weakName}</em> (${weak.val}/10)</p>
+        <div class="actions">
+          <h3>3 микрошага для усиления (${weak.name}):</h3>
+          ${getSuggestedActions(weak.name)}
+        </div>
+        <details style="margin-top:1rem;">
+          <summary>Как интерпретировать формулу</summary>
+          <p><code>C = D × V × F > R</code></p>
+          <ul>
+            <li><strong>D</strong> — Неудовлетворённость: «так больше нельзя»</li>
+            <li><strong>V</strong> — Видение: конкретный образ новой жизни</li>
+            <li><strong>F</strong> — Первые шаги: микрошаги на 24–72 ч</li>
+            <li><strong>R</strong> — Сопротивление: внутренние/внешние тормоза</li>
+          </ul>
+        </details>
+      `;
+
+      const resDiv = document.getElementById('result');
+      resDiv.innerHTML = resultHTML;
+      resDiv.className = "result-box " + colorClass;
+      resDiv.style.display = 'block';
+    }
+
+    function getSuggestedActions(factor) {
+      const actions = {
+        D: [
+          "Выписать 3 реальные потери от статус-кво за последний месяц",
+          "Описать сценарий «ничего не меняю» через 1 год — в деталях",
+          "Послушать подкаст/интервью человека, прошедшего похожий путь"
+        ],
+        V: [
+          "Описать «идеальный день» через 1 год: утро → вечер",
+          "Заполнить шаблон: <em>«Я человек, который ________»</em>",
+          "Найти 1 кейс человека с похожей целью — как он/она видел(а) будущее?"
+        ],
+        F: [
+          "Определить 1 микрошаг по формуле: действие + время + место + ≤20 мин",
+          "Заблокировать 25 минут завтра в календаре для этого шага",
+          "Подготовить всё необходимое (скрипт, заметки, инструменты) заранее"
+        ]
+      }[factor] || [];
+
+      return actions.map(a => `<div class="action-item">${a}</div>`).join('');
+    }
+  </script>
+</body>
+</html>

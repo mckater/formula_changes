@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Формула изменений</title>
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRj2Ml" crossorigin="anonymous">
+  <style>
+    body {
+      padding-top: 56px; /* отступ под фиксированную навигацию */
+    }
+    .hero {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 4rem 0;
+      text-align: center;
+    }
+    .btn-diagnosis {
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+    }
+    .lead {
+      max-width: 800px;
+      margin: 1.5rem auto;
+    }
+    footer {
+      background-color: #f8f9fa;
+      padding: 1.5rem 0;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Навигация -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">Формула изменений</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Главная</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="change_diagnosis.html">Диагностика</a>
+          </li>
+          <!-- Можно добавить /about, /faq и т.д. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Формула изменений без эзотерики</h1>
+      <p class="lead text-muted">
+        Создана Дэвидом Глейхером, популяризирована Ричардом Бекхардом.<br>
+        <strong>C = D × V × F > R</strong><br>
+        Изменение происходит только если: <em>неудовлетворённость × видение × первые шаги</em> сильнее <em>сопротивления</em>.
+      </p>
+      <a href="change_diagnosis.html" class="btn btn-primary btn-lg btn-diagnosis mt-3">
+        Пройти самодиагностику →
+      </a>
+    </div>
+  </section>
+
+  <!-- Основное описание -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <h3>🔹 D — Неудовлетворённость</h3>
+          <p>
+            Это честное <em>«так дальше нельзя»</em>, а не «было бы неплохо». Пока этого нет — будешь оправдывать застой и переносить на завтра.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3>🔹 V — Видение</h3>
+          <p>
+            Не «хочу, чтобы было хорошо», а конкретный образ новой жизни и идентичности: <em>«я человек, который живёт вот так»</em>.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3>🔹 F — Первые шаги</h3>
+          <p>
+            Самая частая точка поломки. Даже при сильной боли и ярком видении — если не знаешь, <em>что сделать сегодня</em>, ты зависнешь в тревоге.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3>🔹 R — Сопротивление</h3>
+          <p>
+            Внутри: страхи, убеждения, гомеостаз.<br>
+            Снаружи: окружение, усталость, риски.<br>
+            Изменения реальны, только если <strong>D × V × F > R</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-5" role="alert">
+        ⚠️ <strong>Важно:</strong> D нельзя использовать как вечное топливо — постоянное «дрочево» приведёт к выгоранию.
+        Нужно сознательно переключаться в V после старта.
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container text-center text-muted">
+      &copy; 2025 Формула изменений. Все права защищены.<br>
+      Основано на работах Д. Глейхера, Р. Бекхарда, К. Левина и BJ Fogg.
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS (опционально для интерактива) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jV" crossorigin="anonymous"></script>
+
+</body>
+</html>
