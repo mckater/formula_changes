@@ -1,4 +1,3 @@
-# diagnose.py
 import sys
 from typing import Dict, List, Tuple
 
@@ -101,6 +100,7 @@ def add_diagnosis_routes(app):
     @app.route('/change_diagnosis', methods=['POST'])
     def api_diagnose():
         data = request.get_json()
+
         try:
             D = int(data['D'])
             V = int(data['V'])
